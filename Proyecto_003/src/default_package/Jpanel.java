@@ -8,7 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
- 
+
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
  
@@ -46,6 +47,7 @@ public class Jpanel extends JPanel implements ActionListener {
         if (ship.getLife() <= 0) {
             ship.deadble();
             gameActive = false; // El juego se detiene cuando la vida llega a cero
+            showGameOverDialog();
         }
     }
  
@@ -157,5 +159,24 @@ public class Jpanel extends JPanel implements ActionListener {
     public void event(Ship ship) {
         this.ship = ship;
         this.gameActive = true;
+    }
+    
+    private void showGameOverDialog() {
+        int option = JOptionPane.showConfirmDialog(null, "Game Over! ¿Quieres jugar de nuevo?", "Game Over",
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+        if (option == JOptionPane.YES_OPTION) {
+            restartGame();
+        } else {
+            System.exit(0);
+        }
+    }
+
+    private void restartGame() {
+        ship = new Ship();
+        enemies = new Enemies(6, 0, 800, 0, 600);
+        score = 0;
+        gameActive = true;
+        requestFocusInWindow();
     }
 }
